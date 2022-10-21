@@ -62,6 +62,7 @@ class DrawLine {
     if (e.buttons === 2) {
       if (this.isDraw) {
         this.lines.pop()
+        this.currentDots = []
         this.drawLinesAndDots()
         this.isDraw = false
       }
