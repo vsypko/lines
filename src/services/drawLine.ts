@@ -50,9 +50,9 @@ class DrawLine {
         this.lines[lastLineIndex].toX = x
         this.lines[lastLineIndex].toY = y
         this.lines[lastLineIndex].deltaX =
-          Math.abs(x - this.lines[lastLineIndex].fromX) / 420
+          Math.abs(x - this.lines[lastLineIndex].fromX) / 375
         this.lines[lastLineIndex].deltaY =
-          Math.abs(y - this.lines[lastLineIndex].fromY) / 420
+          Math.abs(y - this.lines[lastLineIndex].fromY) / 375
 
         this.setLineConst(this.lines[lastLineIndex])
         this.allDots = this.allDots.concat(this.currentDots)
@@ -224,7 +224,7 @@ class DrawLine {
       let i = this.linesReduction()
       if (i <= 0) return
       this.collapseLines()
-    }, 2)
+    }, 4)
   }
 }
 
