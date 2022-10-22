@@ -31,6 +31,7 @@ class DrawLine {
   pointerDownHandler(e: PointerEvent) {
     let x = e.pageX - this.canvas.offsetLeft
     let y = e.pageY - this.canvas.offsetTop
+
     if (e.buttons === 1) {
       if (!this.isDraw) {
         this.lines.push({
@@ -49,9 +50,9 @@ class DrawLine {
         this.lines[lastLineIndex].toX = x
         this.lines[lastLineIndex].toY = y
         this.lines[lastLineIndex].deltaX =
-          Math.abs(x - this.lines[lastLineIndex].fromX) / 750
+          Math.abs(x - this.lines[lastLineIndex].fromX) / 420
         this.lines[lastLineIndex].deltaY =
-          Math.abs(y - this.lines[lastLineIndex].fromY) / 750
+          Math.abs(y - this.lines[lastLineIndex].fromY) / 420
 
         this.setLineConst(this.lines[lastLineIndex])
         this.allDots = this.allDots.concat(this.currentDots)
@@ -223,7 +224,7 @@ class DrawLine {
       let i = this.linesReduction()
       if (i <= 0) return
       this.collapseLines()
-    }, 1)
+    }, 2)
   }
 }
 
