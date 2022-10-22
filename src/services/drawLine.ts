@@ -45,28 +45,33 @@ class DrawLine {
           deltaY: 0,
         })
         this.isDraw = true
-      } else {
-        let lastLineIndex: number = this.lines.length - 1
-        this.lines[lastLineIndex].toX = x
-        this.lines[lastLineIndex].toY = y
-        this.lines[lastLineIndex].deltaX =
-          Math.abs(x - this.lines[lastLineIndex].fromX) / 530
-        this.lines[lastLineIndex].deltaY =
-          Math.abs(y - this.lines[lastLineIndex].fromY) / 530
-
-        this.setLineConst(this.lines[lastLineIndex])
-        this.allDots = this.allDots.concat(this.currentDots)
-        this.currentDots = []
-        this.isDraw = false
+        return
       }
+
+      let lastLineIndex: number = this.lines.length - 1
+      this.lines[lastLineIndex].toX = x
+      this.lines[lastLineIndex].toY = y
+      this.lines[lastLineIndex].deltaX =
+        Math.abs(x - this.lines[lastLineIndex].fromX) / 750
+      this.lines[lastLineIndex].deltaY =
+        Math.abs(y - this.lines[lastLineIndex].fromY) / 750
+
+      this.setLineConst(this.lines[lastLineIndex])
+      this.allDots = this.allDots.concat(this.currentDots)
+      this.currentDots = []
+      this.isDraw = false
     }
     if (e.buttons === 2) {
-      if (this.isDraw) {
-        this.lines.pop()
-        this.currentDots = []
-        this.drawLinesAndDots()
-        this.isDraw = false
-      }
+      this.deleteCurrentLineAndDots()
+    }
+  }
+
+  deleteCurrentLineAndDots() {
+    if (this.isDraw) {
+      this.isDraw = false
+      this.lines.pop()
+      this.currentDots = []
+      this.drawLinesAndDots()
     }
   }
 
@@ -123,7 +128,7 @@ class DrawLine {
       let lastLine = this.lines[i]
       this.currentDots = []
       this.lines.forEach((line, index) => {
-        if (i !== index && (line.a !== lastLine.a || line.b !== lastLine.b)) {
+        if (i !== index && line.a !== lastLine.a) {
           let x = (lastLine.b - line.b) / (line.a - lastLine.a)
           let y =
             (line.a * lastLine.b - line.b * lastLine.a) / (line.a - lastLine.a)
@@ -172,23 +177,13 @@ class DrawLine {
     return false
   }
 
-  collapseLines() {
-    if (this.isDraw) {
-      this.lines.pop()
-      this.currentDots = []
-      this.isDraw = false
-      this.drawLinesAndDots()
-    }
-    this.collapseTime()
-  }
-
-  linesReduction(): number {
-    let i: number = 0
+  dropLinesAndDots() {
+    let i: boolean = false
     this.lines.forEach((line, index, object) => {
       let lengthX: boolean = Math.abs(line.fromX - line.toX) > line.deltaX
       let lengthY: boolean = Math.abs(line.fromY - line.toY) > line.deltaY
       if (lengthX) {
-        i += 1
+        i = true
         if (line.fromX < line.toX) {
           line.fromX += line.deltaX
           line.toX -= line.deltaX
@@ -196,12 +191,9 @@ class DrawLine {
           line.fromX -= line.deltaX
           line.toX += line.deltaX
         }
-      } else {
-        object.splice(index, 1)
-        i -= 1
       }
       if (lengthY) {
-        i += 1
+        i = true
         if (line.fromY < line.toY) {
           line.fromY += line.deltaY
           line.toY -= line.deltaY
@@ -209,18 +201,19 @@ class DrawLine {
           line.fromY -= line.deltaY
           line.toY += line.deltaY
         }
-      } else {
-        object.splice(index, 1)
-        i -= 1
       }
+      if (!i) {
+        object.splice(index, 1)
+      }
+
       if (lengthX && lengthY) {
-        this.allDots.forEach((dot, index, object) => {
+        this.allDots.forEach((dot, idx, dots) => {
           if (
             (Math.abs(dot.x - line.fromX) < 4 &&
               Math.abs(dot.y - line.fromY) < 4) ||
             (Math.abs(dot.x - line.toX) < 4 && Math.abs(dot.y - line.toY) < 4)
           ) {
-            object.splice(index, 1)
+            dots.splice(idx, 1)
           }
         })
       }
@@ -229,12 +222,20 @@ class DrawLine {
     return i
   }
 
-  collapseTime() {
+  collapseTimer() {
     setTimeout(() => {
-      let i = this.linesReduction()
-      if (i <= 0) return
-      this.collapseTime()
-    }, 4)
+      let isLinesDroped = this.dropLinesAndDots()
+      if (!isLinesDroped) {
+        return
+      }
+      this.collapseTimer()
+    }, 5)
+    return
+  }
+
+  collapseLines() {
+    this.deleteCurrentLineAndDots()
+    this.collapseTimer()
   }
 }
 
