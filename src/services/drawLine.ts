@@ -229,7 +229,6 @@ class DrawLine {
       }
       this.collapser()
     }, 5)
-    return
   }
 
   collapseLines() {
