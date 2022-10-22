@@ -172,7 +172,7 @@ class DrawLine {
     return false
   }
 
-  callapseLines() {
+  collapseLines() {
     if (this.isDraw) {
       this.lines.pop()
       this.currentDots = []
