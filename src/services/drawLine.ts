@@ -126,7 +126,7 @@ class DrawLine {
         if (i !== index && (line.a !== lastLine.a || line.b !== lastLine.b)) {
           let x = (lastLine.b - line.b) / (line.a - lastLine.a)
           let y =
-            (line.a * (lastLine.b - line.b)) / (line.a - lastLine.a) + line.b
+            (line.a * lastLine.b - line.b * lastLine.a) / (line.a - lastLine.a)
 
           if (
             this.isDotOnLine(
