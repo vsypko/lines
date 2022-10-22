@@ -177,6 +177,7 @@ class DrawLine {
       this.lines.pop()
       this.currentDots = []
       this.isDraw = false
+      this.drawLinesAndDots()
     }
     this.collapseTime()
   }
