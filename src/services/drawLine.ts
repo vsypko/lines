@@ -123,7 +123,7 @@ class DrawLine {
   }
 
   setCurrentDots() {
-    if (this.lines && this.lines.length > 1) {
+    if (this.lines.length > 1) {
       let i = this.lines.length - 1
       let lastLine = this.lines[i]
       this.currentDots = []
@@ -204,38 +204,37 @@ class DrawLine {
       }
       if (!i) {
         object.splice(index, 1)
+        if (this.lines.length) i = true
       }
 
-      if (lengthX && lengthY) {
-        this.allDots.forEach((dot, idx, dots) => {
-          if (
-            (Math.abs(dot.x - line.fromX) < 4 &&
-              Math.abs(dot.y - line.fromY) < 4) ||
-            (Math.abs(dot.x - line.toX) < 4 && Math.abs(dot.y - line.toY) < 4)
-          ) {
-            dots.splice(idx, 1)
-          }
-        })
-      }
+      this.allDots.forEach((dot, idx, dots) => {
+        if (
+          (Math.abs(dot.x - line.fromX) < 4 &&
+            Math.abs(dot.y - line.fromY) < 4) ||
+          (Math.abs(dot.x - line.toX) < 4 && Math.abs(dot.y - line.toY) < 4)
+        )
+          dots.splice(idx, 1)
+      })
+      this.setCurrentDots()
     })
     this.drawLinesAndDots()
     return i
   }
 
-  collapseTimer() {
+  collapser() {
     setTimeout(() => {
       let isLinesDroped = this.dropLinesAndDots()
       if (!isLinesDroped) {
         return
       }
-      this.collapseTimer()
+      this.collapser()
     }, 5)
     return
   }
 
   collapseLines() {
     this.deleteCurrentLineAndDots()
-    this.collapseTimer()
+    this.collapser()
   }
 }
 
