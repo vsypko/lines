@@ -50,9 +50,9 @@ class DrawLine {
         this.lines[lastLineIndex].toX = x
         this.lines[lastLineIndex].toY = y
         this.lines[lastLineIndex].deltaX =
-          Math.abs(x - this.lines[lastLineIndex].fromX) / 375
+          Math.abs(x - this.lines[lastLineIndex].fromX) / 530
         this.lines[lastLineIndex].deltaY =
-          Math.abs(y - this.lines[lastLineIndex].fromY) / 375
+          Math.abs(y - this.lines[lastLineIndex].fromY) / 530
 
         this.setLineConst(this.lines[lastLineIndex])
         this.allDots = this.allDots.concat(this.currentDots)
