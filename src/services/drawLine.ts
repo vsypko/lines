@@ -172,13 +172,16 @@ class DrawLine {
     return false
   }
 
-  linesReduction(): number {
+  callapseLines() {
     if (this.isDraw) {
       this.lines.pop()
       this.currentDots = []
       this.isDraw = false
     }
+    this.collapseTime()
+  }
 
+  linesReduction(): number {
     let i: number = 0
     this.lines.forEach((line, index, object) => {
       let lengthX: boolean = Math.abs(line.fromX - line.toX) > line.deltaX
@@ -225,11 +228,11 @@ class DrawLine {
     return i
   }
 
-  collapseLines() {
+  collapseTime() {
     setTimeout(() => {
       let i = this.linesReduction()
       if (i <= 0) return
-      this.collapseLines()
+      this.collapseTime()
     }, 4)
   }
 }
