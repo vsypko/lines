@@ -66,15 +66,6 @@ class DrawLine {
     }
   }
 
-  deleteCurrentLineAndDots() {
-    if (this.isDraw) {
-      this.isDraw = false
-      this.lines.pop()
-      this.currentDots = []
-      this.drawLinesAndDots()
-    }
-  }
-
   pointerMoveHandler(e: PointerEvent) {
     if (!this.isDraw) return
     let x = e.pageX - this.canvas.offsetLeft
@@ -175,6 +166,15 @@ class DrawLine {
       if (x0 >= x2 && x0 <= x1 && y0 >= y2 && y0 <= y1) return true
     }
     return false
+  }
+
+  deleteCurrentLineAndDots() {
+    if (this.isDraw) {
+      this.isDraw = false
+      this.lines.pop()
+      this.currentDots = []
+      this.drawLinesAndDots()
+    }
   }
 
   dropLinesAndDots() {
