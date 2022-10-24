@@ -119,53 +119,25 @@ class DrawLine {
       let lastLine = this.lines[i]
       this.currentDots = []
       this.lines.forEach((line, index) => {
-        if (i !== index && line.a !== lastLine.a) {
+        if (line.a !== lastLine.a) {
           let x = (lastLine.b - line.b) / (line.a - lastLine.a)
           let y =
             (line.a * lastLine.b - line.b * lastLine.a) / (line.a - lastLine.a)
 
           if (
-            this.isDotOnLine(
-              x,
-              line.fromX,
-              line.toX,
-              y,
-              line.fromY,
-              line.toY,
-            ) &&
-            this.isDotOnLine(
-              x,
-              lastLine.fromX,
-              lastLine.toX,
-              y,
-              lastLine.fromY,
-              lastLine.toY,
-            )
+            Math.abs(x - line.fromX) + Math.abs(x - line.toX) <=
+              Math.abs(line.fromX - line.toX) &&
+            Math.abs(y - line.fromY) + Math.abs(y - line.toY) <=
+              Math.abs(line.fromY - line.toY) &&
+            Math.abs(x - lastLine.fromX) + Math.abs(x - lastLine.toX) <=
+              Math.abs(lastLine.fromX - lastLine.toX) &&
+            Math.abs(y - lastLine.fromY) + Math.abs(y - lastLine.toY) <=
+              Math.abs(lastLine.fromY - lastLine.toY)
           )
             this.currentDots.push({ x, y })
         }
       })
     }
-  }
-
-  isDotOnLine(
-    x0: number,
-    x1: number,
-    x2: number,
-    y0: number,
-    y1: number,
-    y2: number,
-  ): boolean {
-    if (x2 - x1 >= 0 && y2 - y1 >= 0) {
-      if (x0 <= x2 && x0 >= x1 && y0 <= y2 && y0 >= y1) return true
-    } else if (x2 - x1 >= 0 && y2 - y1 <= 0) {
-      if (x0 <= x2 && x0 >= x1 && y0 >= y2 && y0 <= y1) return true
-    } else if (x2 - x1 <= 0 && y2 - y1 >= 0) {
-      if (x0 >= x2 && x0 <= x1 && y0 <= y2 && y0 >= y1) return true
-    } else {
-      if (x0 >= x2 && x0 <= x1 && y0 >= y2 && y0 <= y1) return true
-    }
-    return false
   }
 
   deleteCurrentLineAndDots() {
